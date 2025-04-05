@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakout Game</title>
+    <title>Bricks Breaker Game</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
+
+    <div id="overlay">
+        <h1>Bricks Breaker Game</h1>
+        <button id="startBtn">Play Now</button>
+        <button id="retryBtn" style="display: none;">Retry</button>
     </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <div id="scoreBoard">Score: 0</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/script.js"></script>
+
 </body>
 </html>
