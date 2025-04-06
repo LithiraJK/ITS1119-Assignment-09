@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bricks Breaker Game</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    
-</head>
-<body>
-
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
     <h1>Bricks Breaker Game</h1>
     <div class="img-container">
-        <img src="/assets/images/vecteezy_futuristic-gaming-background-in-livestream-vector_6970462.jpg" alt="bg-img">
+      <img
+        src="/assets/images/vecteezy_futuristic-gaming-background-in-livestream-vector_6970462.jpg"
+        alt="bg-img" />
+    </div>
+
+    <div class="game-info">
+      <div class="lvl-board">
+        <label for="level">Level : </label>
+        <label id="lvl-no" for="lvl-no">0</label>
+      </div>
+
+      <div class="score-board">
+        <label id="score" for="score">Score : </label>
+        <label id="scoreBoard">0</label>
+      </div>
     </div>
 
     <div class="game-container">
-
-        <div class="score-board">
-            <label id="score" for="score">Score Board</label>
-            <div id="scoreBoard">0</div>
-        </div>
-        <canvas id="gameCanvas"></canvas>
+      <canvas id="gameCanvas"></canvas>
     </div>
 
     <button id="startBtn">Play Now</button>
-    <button id="retryBtn" style="display: none;">Retry</button>
-    
+    <button id="retryBtn" style="display: none">Retry</button>
+
+    <div id="levelCompleteMsg" class="game-message">🎉 Level Complete!</div>
+    <div id="gameOverMsg" class="game-message">💀 Game Over!</div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/script.js"></script>
-
-</body>
+  </body>
 </html>

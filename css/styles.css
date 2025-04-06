@@ -12,12 +12,16 @@ body {
 }
 
 canvas {
-  background: transparent;
-  border-radius: 10px;
-  display: block;
-  margin: 20px auto;
-  border: 2px solid #eb0202;
+    width: 35vw;
+    height: 60vh;
+    display: block;
+    border: 2px solid #eb0202;
+    background-color: transparent; 
+    border-radius: 10px;
+    max-width: 600px; 
+    margin: auto;
 }
+
 
 button {
   padding: 5px 20px;
@@ -38,17 +42,33 @@ button:hover {
   background: #000;
   color: #eb0202;
 }
-
-#scoreBoard{
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
+#lvl-no {
+  margin-left: 15px;
 }
 
-#score{
-    font-family: "Anton", sans-serif;
-    font-weight: 400;
-    font-size: 1.5rem
+#scoreBoard {
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 15px;
+}
+
+.game-info {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -10%);
+}
+
+.game-info label {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 .game-container {
@@ -74,9 +94,42 @@ button:hover {
 }
 
 body > h1 {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  text-transform: capitalize;
+  font-size: 24px;
   position: absolute;
   top: 2%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
+}
+
+
+
+.game-message {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 2rem;
+    padding: 20px 40px;
+    border-radius: 10px;
+    z-index: 999;
+    text-align: center;
+    animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+    from {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
 }

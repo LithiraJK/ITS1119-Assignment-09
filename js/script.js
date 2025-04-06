@@ -1,12 +1,15 @@
 const canvas = $("#gameCanvas")[0];
 const context = canvas.getContext("2d");
-canvas.width = 480;
-canvas.height = 340;
 
 const $overlay = $("#overlay");
 const $startBtn = $("#startBtn");
 const $retryBtn = $("#retryBtn");
 const $scoreBoard = $("#scoreBoard");
+const $levelBoard = $("#lvl-no");
+
+const BALL_INITIAL_SPEED = 2;
+const PADDLE_SPEED = 7;
+const BALL_START_OFFSET = 30;
 
 let ballRadius = 10, ballX, ballY, ballSpeedX, ballSpeedY;
 let paddleHeight = 10, paddleWidth = 75, paddleX, rightPressed = false, leftPressed = false;
@@ -19,7 +22,13 @@ $(document).on("keyup", keyUpHandler);
 $startBtn.on("click", startGame);
 $retryBtn.on("click", startGame);
 
+
 //----- functions -------
+
+function updateLevel() {
+    $levelBoard.text(level);
+}
+
 
 function keyDownHandler(e) {
     if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
@@ -32,10 +41,13 @@ function keyUpHandler(e) {
 }
 
 function startGame() {
-    $overlay.hide();
     resetGame();
+    $("#gameOverMsg").hide();
+    $retryBtn.hide().prop("disabled", true);
+    $startBtn.prop("disabled", true).hide();
+    
     ballX = canvas.width / 2;
-    ballY = canvas.height - 30;
+    ballY = canvas.height - BALL_START_OFFSET;
     paddleX = (canvas.width - paddleWidth) / 2;
     draw();
 }
@@ -65,7 +77,7 @@ function drawBall() {
 function drawPaddle() {
     context.beginPath();
     context.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    context.fillStyle = "#fff200";
+    context.fillStyle = "#f39c12";
     context.fill();
     context.closePath();
 }
@@ -101,23 +113,28 @@ function collisionDetection() {
                     updateScore();
 
                     if (bricksRemaining === 0) {
-                        if (level < maxLevel) {
-                            level++;
-                            ballSpeedX *= 1.2;
-                            ballSpeedY *= 1.2;
-                            paddleWidth = Math.max(40, paddleWidth - 10);
-                            alert("🎉 Level " + level);
-                            resetBallAndPaddle();
-                            createBricks();
-                        } else {
-                            alert("🏆 You won all levels!");
-                            showRetry();
-                            return;
-                        }
+                        handleLevelCompletion();
                     }
+                    return; 
                 }
             }
         }
+    }
+}
+
+function handleLevelCompletion() {
+    if (level < maxLevel) {
+        level++;
+        ballSpeedX *= 1.2;
+        ballSpeedY *= 1.2;
+        paddleWidth = Math.max(40, paddleWidth - 10);
+        alert(`🎉 Congrats! You Passed Level ${level - 1}`);
+        updateLevel();
+        resetBallAndPaddle();
+        createBricks();
+    } else {
+        alert("🏆 Congrats! You won all levels!");
+        showRetry();
     }
 }
 
@@ -126,6 +143,8 @@ function updateScore() {
 }
 
 function draw() {
+    resizeCanvas(); 
+
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
@@ -152,18 +171,30 @@ function draw() {
 }
 
 function movePaddle() {
+    const paddleSpeed = canvas.width * 0.01;
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
-        paddleX += 7;
+        paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
-        paddleX -= 7;
+        paddleX -= paddleSpeed;
     }
 }
 
+function resizeCanvas() {
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+    }
+}
+
+
 function resetBallAndPaddle() {
     ballX = canvas.width / 2;
-    ballY = canvas.height - 30;
-    ballSpeedX = 2 * (Math.random() < 0.5 ? -1 : 1);
-    ballSpeedY = -2;
+    ballY = canvas.height - BALL_START_OFFSET;
+    ballSpeedX = BALL_INITIAL_SPEED * (Math.random() < 0.5 ? -1 : 1);
+    ballSpeedY = -BALL_INITIAL_SPEED;
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
@@ -174,11 +205,13 @@ function resetGame() {
     resetBallAndPaddle();
     createBricks();
     updateScore();
+    updateLevel();
 }
 
 function showRetry() {
-    $overlay.show();
-    $startBtn.hide();
-    $retryBtn.show();
+    $retryBtn.prop("disabled", false).show(); 
+    $startBtn.prop("disabled", false).hide();
+    $("#gameOverMsg").fadeIn(); 
     cancelAnimationFrame(animationId);
 }
+
