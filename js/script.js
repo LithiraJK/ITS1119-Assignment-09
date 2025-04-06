@@ -1,7 +1,7 @@
 const canvas = $("#gameCanvas")[0];
 const context = canvas.getContext("2d");
 canvas.width = 480;
-canvas.height = 520;
+canvas.height = 340;
 
 const $overlay = $("#overlay");
 const $startBtn = $("#startBtn");
@@ -18,6 +18,8 @@ $(document).on("keydown", keyDownHandler);
 $(document).on("keyup", keyUpHandler);
 $startBtn.on("click", startGame);
 $retryBtn.on("click", startGame);
+
+//----- functions -------
 
 function keyDownHandler(e) {
     if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
@@ -55,7 +57,7 @@ function createBricks() {
 function drawBall() {
     context.beginPath();
     context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-    context.fillStyle = "#00f2ff";
+    context.fillStyle = "#ffffff";
     context.fill();
     context.closePath();
 }
@@ -63,7 +65,7 @@ function drawBall() {
 function drawPaddle() {
     context.beginPath();
     context.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    context.fillStyle = "#f0f";
+    context.fillStyle = "#fff200";
     context.fill();
     context.closePath();
 }
@@ -78,7 +80,7 @@ function drawBricks() {
                 bricks[c][r].y = brickY;
                 context.beginPath();
                 context.rect(brickX, brickY, brickWidth, brickHeight);
-                context.fillStyle = "#ff5722";
+                context.fillStyle = "#eb0202";
                 context.fill();
                 context.closePath();
             }
@@ -120,7 +122,7 @@ function collisionDetection() {
 }
 
 function updateScore() {
-    $scoreBoard.text("Score: " + score);
+    $scoreBoard.text(score);
 }
 
 function draw() {
