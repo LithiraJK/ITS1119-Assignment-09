@@ -7,18 +7,26 @@ const $retryBtn = $("#retryBtn");
 const $scoreBoard = $("#scoreBoard");
 const $levelBoard = $("#lvl-no");
 
-const BALL_INITIAL_SPEED = 2;
-const PADDLE_SPEED = 7;
-const BALL_START_OFFSET = 30;
+const ball_initial_speed = 2;
+const paddle_speed = 7;
+const ball_start_offset = 30;
 
-let ballRadius = 10, ballX, ballY, ballSpeedX, ballSpeedY;
+let ballRadius = 10;
+let ballX;
+let ballY;
+let ballSpeedX;
+let ballSpeedY;
 let paddleHeight = 10, paddleWidth = 75, paddleX, rightPressed = false, leftPressed = false;
-let level = 1, maxLevel = 4, bricksRemaining, score = 0;
+let level = 1, maxLevel = 4;
+let bricksRemaining;
+let score = 0;
 const brickColumnCount = 5, brickWidth = 75, brickHeight = 20, brickPadding = 10, brickOffsetTop = 30, brickOffsetLeft = 30;
-let bricks = [], animationId;
+let bricks = [];
+let animationId;
 
 $(document).on("keydown", keyDownHandler);
 $(document).on("keyup", keyUpHandler);
+
 $startBtn.on("click", startGame);
 $retryBtn.on("click", startGame);
 
@@ -41,14 +49,13 @@ function keyUpHandler(e) {
 }
 
 function startGame() {
-    resetGame();
     $("#gameOverMsg").hide();
     $retryBtn.hide().prop("disabled", true);
     $startBtn.prop("disabled", true).hide();
-    
-    ballX = canvas.width / 2;
-    ballY = canvas.height - BALL_START_OFFSET;
-    paddleX = (canvas.width - paddleWidth) / 2;
+
+    resizeCanvas();
+    resetGame();
+    resetBallAndPaddle(); 
     draw();
 }
 
@@ -152,7 +159,6 @@ function draw() {
     collisionDetection();
     movePaddle();
 
-    // Ball Movement
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
@@ -192,9 +198,9 @@ function resizeCanvas() {
 
 function resetBallAndPaddle() {
     ballX = canvas.width / 2;
-    ballY = canvas.height - BALL_START_OFFSET;
-    ballSpeedX = BALL_INITIAL_SPEED * (Math.random() < 0.5 ? -1 : 1);
-    ballSpeedY = -BALL_INITIAL_SPEED;
+    ballY = canvas.height - ball_start_offset;
+    ballSpeedX = ball_initial_speed * (Math.random() < 0.5 ? -1 : 1);
+    ballSpeedY = -ball_initial_speed;
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
